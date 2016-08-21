@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SoapMocker.iml" filepath="$PROJECT_DIR$/.idea/modules/SoapMocker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SoapMocker_main.iml" filepath="$PROJECT_DIR$/.idea/modules/SoapMocker_main.iml" group="SoapMocker" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SoapMocker_test.iml" filepath="$PROJECT_DIR$/.idea/modules/SoapMocker_test.iml" group="SoapMocker" />
+    </modules>
+  </component>
+</project>
