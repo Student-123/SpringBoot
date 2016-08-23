@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:element name="stubConfig" type="stubConfigType"/>
+  <xs:complexType name="matchTagType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="tagName"/>
+      <xs:element type="xs:string" name="value"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="matchersType">
+    <xs:sequence>
+      <xs:element type="matchTagType" name="matchTag" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="requestConfigType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="requestName"/>
+      <xs:element type="matchersType" name="matchers"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="responseConfigType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="responseName"/>
+      <xs:element type="matchersType" name="matchers"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="stubDefType" mixed="true">
+    <xs:sequence>
+      <xs:element type="requestConfigType" name="requestConfig" minOccurs="0"/>
+      <xs:element type="responseConfigType" name="responseConfig" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="serviceDefType" mixed="true">
+    <xs:sequence>
+      <xs:element type="stubDefType" name="stubDef" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="stubConfigType">
+    <xs:sequence>
+      <xs:element type="serviceDefType" name="serviceDef" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

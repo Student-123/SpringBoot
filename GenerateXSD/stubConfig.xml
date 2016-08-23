@@ -1,0 +1,37 @@
+<stubConfig>
+  <serviceDef>
+    <stubDef>
+      <requestConfig>
+          <requestName></requestName>
+          <matchers>
+            <matchTag>
+              <tagName></tagName>
+              <value></value>
+            </matchTag>
+            <matchTag>
+              <tagName></tagName>
+              <value></value>
+            </matchTag>
+          </matchers>
+      </requestConfig>
+      <responseConfig>
+        <responseName></responseName>
+        <matchers>
+          <matchTag>
+            <tagName></tagName>
+            <value></value>
+          </matchTag>
+          <matchTag>
+            <tagName></tagName>
+            <value></value>
+          </matchTag>
+        </matchers>
+      </responseConfig>
+    </stubDef>
+    <stubDef>
+    </stubDef>
+  </serviceDef>
+  <serviceDef>
+
+  </serviceDef>
+</stubConfig>
