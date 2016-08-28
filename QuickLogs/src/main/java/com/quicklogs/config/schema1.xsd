@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:complexType name="configuration">
+    <xs:sequence>
+      <xs:element name="envConfig" type="envConfig" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="envConfig">
+    <xs:sequence>
+      <xs:element name="environment" type="xs:string" minOccurs="0"/>
+      <xs:element name="connectionConfig" type="connectionConfig" minOccurs="0"/>
+      <xs:element name="queryList" type="queryList" minOccurs="0"/>
+      <xs:element name="groupedQueryList" type="queryList" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="connectionConfig">
+    <xs:sequence>
+      <xs:element name="host" type="xs:string" minOccurs="0"/>
+      <xs:element name="user" type="xs:string" minOccurs="0"/>
+      <xs:element name="password" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="queryList">
+    <xs:sequence>
+      <xs:element name="query" type="query" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="query">
+    <xs:sequence>
+      <xs:element name="queryName" type="xs:string" minOccurs="0"/>
+      <xs:element name="querySequence" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

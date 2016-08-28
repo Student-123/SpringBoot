@@ -1,0 +1,30 @@
+<configuration>
+  <envConfig>
+    <environment>omf40</environment>
+    <connectionConfig>
+      <host>kslfjlsdlj</host>
+      <user>dfskfj</user>
+      <password>sfjdfjlj</password>
+    </connectionConfig>
+    <queryList>
+      <query>
+        <queryName>jslj</queryName>
+        <querySequence>jdlf</querySequence>
+      </query>
+      <query>
+        <queryName>lsdfjl</queryName>
+        <querySequence>jldsfjl</querySequence>
+      </query>
+    </queryList>
+    <groupedQueryList>
+      <query>
+        <queryName>jslj</queryName>
+        <querySequence>jdlf</querySequence>
+      </query>
+      <query>
+        <queryName>lsdfjl</queryName>
+        <querySequence>jldsfjl</querySequence>
+      </query>
+    </groupedQueryList>
+  </envConfig>
+</configuration>
