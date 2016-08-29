@@ -1,6 +1,6 @@
 <configuration>
   <envConfig>
-    <environment>omf40</environment>
+    <environment>omf40{commonConfigId}</environment>
     <connectionConfig>
       <host>kslfjlsdlj</host>
       <user>dfskfj</user>
@@ -27,4 +27,51 @@
       </query>
     </groupedQueryList>
   </envConfig>
+
+  <commonConfig>
+    <commonConfigId>1,2</commonConfigId>
+    <queryList>
+      <query>
+        <queryName>jslj</queryName>
+        <querySequence>jdlf</querySequence>
+      </query>
+      <query>
+        <queryName>lsdfjl</queryName>
+        <querySequence>jldsfjl</querySequence>
+      </query>
+    </queryList>
+    <groupedQueryList>
+      <query>
+        <queryName>jslj</queryName>
+        <querySequence>jdlf</querySequence>
+      </query>
+      <query>
+        <queryName>lsdfjl</queryName>
+        <querySequence>jldsfjl</querySequence>
+      </query>
+    </groupedQueryList>
+  </commonConfig>
+  <commonConfig>
+    <commonConfigId>3</commonConfigId>
+    <queryList>
+      <query>
+        <queryName>jslj</queryName>
+        <querySequence>jdlf</querySequence>
+      </query>
+      <query>
+        <queryName>lsdfjl</queryName>
+        <querySequence>jldsfjl</querySequence>
+      </query>
+    </queryList>
+    <groupedQueryList>
+      <query>
+        <queryName>jslj</queryName>
+        <querySequence>jdlf</querySequence>
+      </query>
+      <query>
+        <queryName>lsdfjl</queryName>
+        <querySequence>jldsfjl</querySequence>
+      </query>
+    </groupedQueryList>
+  </commonConfig>
 </configuration>

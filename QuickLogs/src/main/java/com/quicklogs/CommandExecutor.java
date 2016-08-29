@@ -1,9 +1,12 @@
 package com.quicklogs;
 
+import com.jcraft.jsch.Session;
+
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Created by Santhosh on 8/27/2016.
@@ -12,9 +15,14 @@ public class CommandExecutor {
 
     OutputStream shell;
     ConcurrentHashMap<String,String> commandStatusMap;
-    public CommandExecutor(OutputStream shell, ConcurrentHashMap<String,String> commandStatusMap){
+    ExecutorService executorService;
+    Session session;
+
+    public CommandExecutor(OutputStream shell, ConcurrentHashMap<String,String> commandStatusMap, ExecutorService executorService,Session session){
         this.shell = shell;
         this.commandStatusMap = commandStatusMap;
+        this.executorService = executorService;
+        this.session = session;
     }
 
     public boolean executeCommands(List<Command> commands){
@@ -56,6 +64,7 @@ public class CommandExecutor {
         if(executeCommand(commandPWD) && null != commandStatusMap.get(command.getFileName())){
             System.out.println("Preparing transfer of " + command.getFileName() + " in asynchronous mode");
             //Start file transfer
+            executorService.execute(new GetFileTask(SessionChannelUtil.createSFTPChannel(session),command.getFileName(),commandStatusMap.get(command.getFileName()),command.getFileName()));
         }else{
             System.out.println("Error: could not transfer " + command.getFileName());
         }
