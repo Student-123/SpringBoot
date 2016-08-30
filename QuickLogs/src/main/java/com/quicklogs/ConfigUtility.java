@@ -1,8 +1,6 @@
 package com.quicklogs;
 
-import com.quicklogs.config.CommonConfig;
-import com.quicklogs.config.Configuration;
-import com.quicklogs.config.EnvConfig;
+import com.quicklogs.config.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -49,14 +47,27 @@ public class ConfigUtility {
 
     public static EnvConfig getFromCommonConfig(String envName, HashMap<String, EnvConfig> envConfigMap, HashMap<String,CommonConfig> commonConfigMap){
         EnvConfig envConfig = null;
-        String commonName = envName.substring(0,envName.length() -2);
-        String commonId = envName.substring(envName.length()-1,1);
+        String commonName = envName.substring(0,envName.length() -1);
+        String commonId = envName.substring(envName.length()-1);
         envConfig = envConfigMap.get(commonName+commonConfigId);
         if(null != envConfig){
-            envConfig.setQueryList(commonConfigMap.get(commonId).getQueryList());
-            envConfig.setGroupedQueryList(commonConfigMap.get(commonId).getGroupedQueryList());
+            CommonConfig foundCommonConfig = null;
+            for(CommonConfig commonConfig: commonConfigMap.values()){
+                if(commonConfig.getCommonConfigId().contains(commonId+",")){
+                    foundCommonConfig = commonConfig;
+                }
+            }
+            envConfig.setQueryList(updateCommonConfigId(commonId, foundCommonConfig.getQueryList()));
+            envConfig.setGroupedQueryList(foundCommonConfig.getGroupedQueryList());
         }
         return envConfig;
+    }
+
+    public static QueryList updateCommonConfigId(String actCommonConfigId, QueryList queryList){
+        for(Query query:queryList.getQuery()){
+            query.setQuerySequence(query.getQuerySequence().replace(commonConfigId,actCommonConfigId));
+        }
+        return  queryList;
     }
 
     public static HashMap<String,EnvConfig> getEnvConfigMap(Configuration config){
@@ -79,5 +90,16 @@ public class ConfigUtility {
             }
         }
         return commonConfigMap;
+    }
+
+    public static String queryFromConfig(EnvConfig env, String queryName){
+        if(null != env.getQueryList() && null != env.getQueryList().getQuery()){
+            for(Query query:env.getQueryList().getQuery()){
+                if(query.getQueryName().equals(queryName)){
+                    return query.getQuerySequence();
+                }
+            }
+        }
+        return  null;
     }
 }

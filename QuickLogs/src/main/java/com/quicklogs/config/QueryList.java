@@ -14,4 +14,12 @@ import java.util.List;
 })
 public class QueryList {
     List<Query> query;
+
+    public List<Query> getQuery() {
+        return query;
+    }
+
+    public void setQuery(List<Query> query) {
+        this.query = query;
+    }
 }

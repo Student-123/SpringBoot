@@ -48,6 +48,7 @@ public class ExtractFileTask implements Runnable {
             writer.close();
             bufferedReader.close();
             new File(fileName).delete();
+            System.out.println("File extracted : " + fileName);
 
         }catch(Exception e){
             System.out.println("Error: Decompression failed for " + fileName);

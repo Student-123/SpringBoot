@@ -1,24 +1,28 @@
 import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.quicklogs.*;
-import com.sun.corba.se.spi.orbutil.fsm.Input;
-
+import com.quicklogs.config.EnvConfig;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Santhosh on 8/26/2016.
  */
 public class QuickLog {
     public static String inputFile = "InputHOIs.txt";
-    public static  void main(String[] args){
+    public static  void main(String[] arg){
         try{
+            String[] args = {"omf403","tr","A36D27X4"};//, "20160828"};
             String envName = null;
             String queryName = null;
             List<String> hois = null;
+
             if(args.length > 2){
                 envName = args[0];
                 queryName = args[1];
@@ -35,39 +39,53 @@ public class QuickLog {
                 hois = FileUtil.getHOIsFromFile(inputFile);
             }
 
+            EnvConfig envConfig = ConfigUtility.loadConfigFor(envName);
+            String actualQuery = ConfigUtility.queryFromConfig(envConfig,queryName);
+            actualQuery = CommandUtil.paramReplacer(actualQuery,null,null);
+            List<Command> commands = CommandUtil.createCommands(actualQuery,hois);
 
 
             InputStream inputStream = new PipedInputStream();
             PipedOutputStream pipedOutputStream = new PipedOutputStream((PipedInputStream) inputStream);
 
-
             OutputStream outputStream = new PipedOutputStream();
             PipedInputStream pipedInputStream = new PipedInputStream((PipedOutputStream) outputStream);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(pipedInputStream));
 
-
+            Session session = SessionChannelUtil.createSession(envConfig);
+            Channel channel = SessionChannelUtil.createShellChannel(session,inputStream,outputStream);
+            channel.connect();
 
             ConcurrentHashMap<String,String> commandStatusMap = new ConcurrentHashMap<String, String>();
             ShellOutputProcessor processShellOutput = new ShellOutputProcessor(bufferedReader,commandStatusMap);
             Thread shellOutputThread = new Thread(processShellOutput);
             shellOutputThread.start();
 
-            Thread.sleep(1000);
-            pipedOutputStream.write("\n\n".getBytes());
-            Thread.sleep(1000);
-            pipedOutputStream.write("\n\n".getBytes());
-            Thread.sleep(1000);
-            pipedOutputStream.write("pwd\n".getBytes());
-            Thread.sleep(2000);
-            System.out.println("ok");
 
-            Command myCommand = new Command();
-            myCommand.setCmdString("ls -ltr");
-            myCommand.setExpectedStatus(myCommand.getCmdString());
+            ExecutorService fileExecutorService = Executors.newFixedThreadPool(5);
+            CommandExecutor commandExecutor = new CommandExecutor(pipedOutputStream,commandStatusMap,fileExecutorService,session);
+            List<String> fileList = new ArrayList<String>();
+            Collections.synchronizedList(fileList);
+            commandExecutor.executeCommands(commands,fileList);
+            fileExecutorService.shutdown();
+            while (!fileExecutorService.isTerminated());
 
-            //CommandExecutor commandExecutor = new CommandExecutor(pipedOutputStream,commandStatusMap);
-            //commandExecutor.executeCommand(myCommand);
 
+            System.out.println("Total files downloaded :" + fileList);
+            System.out.print("Would you like to extract the file y/n :");
+            String choice = new BufferedReader(new InputStreamReader(System.in)).readLine();
+            if(choice.equals("y")){
+                ExecutorService fileExtractService = Executors.newFixedThreadPool(5);
+                for(String fileName: fileList){
+                    fileExtractService.execute(new ExtractFileTask(fileName,false));
+                }
+                fileExtractService.shutdown();
+                while (!fileExtractService.isTerminated());
+            }
+
+
+            channel.disconnect();
+            session.disconnect();
         }catch (Exception e){
             e.printStackTrace();
         }
