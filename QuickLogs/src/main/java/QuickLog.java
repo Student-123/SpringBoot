@@ -16,27 +16,58 @@ import java.util.concurrent.Executors;
  */
 public class QuickLog {
     public static String inputFile = "InputHOIs.txt";
-    public static  void main(String[] arg){
+    public static  void main(String[] args){
         try{
-            String[] args = {"omf403","tr","A36D27X4"};//, "20160828"};
+            String[] arg = {"omf403","tr","A36D27X4"};//, "20160828"};
             String envName = null;
             String queryName = null;
-            List<String> hois = null;
+            List<String> hois = new ArrayList<String>();
+            boolean paramStarted = false;
+            int paramCount = 1;
+            String param1 = null;
+            String param2 = null;
 
-            if(args.length > 2){
-                envName = args[0];
-                queryName = args[1];
-                hois = Arrays.asList(args[2].split(","));
-            }else if(args.length == 2){
-                envName = args[0];
-                queryName = args[1];
-                System.out.println("HOIs will be read from " + inputFile);
-            }else{
-                System.out.println("Please ensure you provided  :environment:    :query:");
-                System.exit(1);
+            for(int i=0;i<arg.length;i++){
+                switch (i){
+                    case 0: envName = arg[i];
+                        break;
+                    case 1: queryName = arg[i];
+                        break;
+                    case 2: if(arg[i].equals("-p")){
+                                paramStarted = true;
+                                System.out.println("HOIs will be read from " + inputFile);
+                            }else{
+                                hois = Arrays.asList(arg[i].split(","));
+                            }
+                        break;
+                    case 3: if(arg[i].equals("-p")){
+                                paramStarted = true;
+                            }else if(paramStarted){
+                                param1 = arg[i];
+                                paramCount++;
+                            }
+                        break;
+                    case 4: if(paramCount == 1){
+                                param1 = arg[i];
+                                paramCount++;
+                            }else if(paramCount == 2){
+                                param2 = arg[i];
+                                paramCount++;
+                            }
+                        break;
+                    case 5:
+                        param2 = arg[i];
+                        paramCount++;
+                        break;
+                }
             }
+
             if(hois.isEmpty()){
                 hois = FileUtil.getHOIsFromFile(inputFile);
+            }
+            if(hois.isEmpty()){
+                System.out.println("Error: No hois provided");
+                System.exit(1);
             }
 
             EnvConfig envConfig = ConfigUtility.loadConfigFor(envName);
@@ -77,7 +108,7 @@ public class QuickLog {
             if(choice.equals("y")){
                 ExecutorService fileExtractService = Executors.newFixedThreadPool(5);
                 for(String fileName: fileList){
-                    fileExtractService.execute(new ExtractFileTask(fileName,false));
+                    fileExtractService.execute(new ExtractFileTask(fileName,true));
                 }
                 fileExtractService.shutdown();
                 while (!fileExtractService.isTerminated());

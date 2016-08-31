@@ -39,6 +39,7 @@ public class ExtractFileTask implements Runnable {
                 fileLines.add(line);
             }
             if(isNeedSort){
+                System.out.println("Sorting file "+ fileName + "based on timestamp");
                 Collections.sort(fileLines);
             }
             for(String outputLine: fileLines){

@@ -105,11 +105,22 @@ public class CommandUtil {
         }
     }
 
-    public static String paramReplacer(String inputString,String paramm1,String paramm2){
-        if(null != paramm1)
-            inputString = inputString.replace(param1,paramm1);
-        if(null != paramm2)
-            inputString = inputString.replace(param2,paramm2);
+    public static String paramReplacer(String inputString,String paramm1,String paramm2) {
+        if (inputString.contains(param1)) {
+            if (null != paramm1) {
+                inputString = inputString.replace(param1, paramm1);
+            } else {
+                System.out.println("Param 1 is expected");
+            }
+        }
+
+        if (inputString.contains(param2)) {
+            if (null != paramm2) {
+                inputString = inputString.replace(param2, paramm2);
+            } else {
+                System.out.println("Param 2 is expected");
+            }
+        }
         return  inputString;
     }
 }
