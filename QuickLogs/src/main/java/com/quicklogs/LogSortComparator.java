@@ -9,8 +9,12 @@ import java.util.regex.Pattern;
  */
 public class LogSortComparator implements Comparator<String> {
 
-    private static String log_timestamp_regex = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2},\\d{3}";
-    private static Pattern timeStampPattern = Pattern.compile(log_timestamp_regex);
+    //private static String log_timestamp_regex = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2},\\d{3}";
+    private Pattern timeStampPattern;
+
+    public LogSortComparator(String regEx){
+        timeStampPattern = Pattern.compile(regEx);
+    }
 
     @Override
     public int compare(String o1, String o2) {

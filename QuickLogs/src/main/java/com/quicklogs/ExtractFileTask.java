@@ -1,10 +1,10 @@
 package com.quicklogs;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.zip.GZIPInputStream;
+
+import static com.quicklogs.SortFormatUtil.getFormatTaskMap;
 
 /**
  * Created by Santhosh on 8/30/2016.
@@ -40,9 +40,13 @@ public class ExtractFileTask implements Runnable {
             }
             if(isNeedSort){
                 System.out.println("Sorting file "+ fileName + "based on timestamp");
-                Collections.sort(fileLines);
+                Collections.sort(fileLines,new LogSortComparator(SortFormatUtil.getSortPattern()));
             }
             for(String outputLine: fileLines){
+                HashMap<String,String> sortFormatMap = SortFormatUtil.getFormatTaskMap();
+                for(Map.Entry entry:sortFormatMap.entrySet()){
+                    outputLine = outputLine.replace((String)entry.getKey(),(String)entry.getValue());
+                }
                 writer.write(outputLine);
                 writer.newLine();
             }

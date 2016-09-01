@@ -1,0 +1,25 @@
+<sortFormatConfig>
+  <sortPattern>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}</sortPattern>
+  <formatTaskList>
+    <formatTask>
+      <ifThis>&lt;</ifThis>
+      <doThis><</doThis>
+    </formatTask>
+    <formatTask>
+      <ifThis>&gt;</ifThis>
+      <doThis>></doThis>
+    </formatTask>
+    <formatTask>
+      <ifThis>&quot;</ifThis>
+      <doThis>"</doThis>
+    </formatTask>
+    <formatTask>
+      <ifThis>&apos;</ifThis>
+      <doThis>'</doThis>
+    </formatTask>
+    <formatTask>
+      <ifThis>*</ifThis>
+      <doThis>1</doThis>
+    </formatTask>
+  </formatTaskList>
+</sortFormatConfig>
